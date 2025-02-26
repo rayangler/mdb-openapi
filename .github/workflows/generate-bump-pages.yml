@@ -1,0 +1,85 @@
+name: Check & deploy API documentation
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  deploy-doc:
+    strategy:
+      matrix:
+        spec_mapping: [
+          {
+            doc: "/test-atlas-admin-api-v1",
+            file: "openapi/v1-deprecated/v1.json",
+            branch: "main",
+          },
+          { 
+            doc: "/test-atlas-admin-api-v2", 
+            file: "openapi/v2.json",
+            branch: "latest",
+          },
+          { 
+            doc: "/docs/reference/api-resources-spec/v2", 
+            file: "openapi/v2/openapi-2025-02-19.json",
+            branch: "2025-02-19",
+          },
+        ]
+    if: ${{ github.event_name == 'push' }}
+    name: Deploy API documentation on Bump.sh
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy API documentation
+        uses: bump-sh/github-action@v1
+        with:
+          doc: ${{matrix.spec_mapping.doc}}
+          token: ${{secrets.BUMP_TOKEN}}
+          file: ${{matrix.spec_mapping.file}}
+          branch: ${{matrix.spec_mapping.branch}}
+
+api-diff:
+  strategy:
+    matrix:
+      spec_mapping: [
+        {
+          doc: "/test-atlas-admin-api-v1",
+          file: "openapi/v1-deprecated/v1.json",
+          branch: "main",
+        },
+        { 
+          doc: "/test-atlas-admin-api-v2", 
+          file: "openapi/v2.json",
+          branch: "latest",
+        },
+        { 
+          doc: "/docs/reference/api-resources-spec/v2", 
+          file: "openapi/v2/openapi-2025-02-19.json",
+          branch: "2025-02-19",
+        },
+      ]
+  if: ${{ github.event_name == 'pull_request' }}
+  name: Check API diff on Bump.sh
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Comment pull request with API diff
+      uses: bump-sh/github-action@v1
+      with:
+        doc: ${{matrix.spec_mapping.doc}}
+        token: ${{secrets.BUMP_TOKEN}}
+        file: ${{matrix.spec_mapping.file}}
+        branch: ${{matrix.spec_mapping.branch}}
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
