@@ -81,5 +81,6 @@ jobs:
           token: ${{secrets.BUMP_TOKEN}}
           file: ${{matrix.spec_mapping.file}}
           branch: ${{matrix.spec_mapping.branch}}
+          command: diff
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
