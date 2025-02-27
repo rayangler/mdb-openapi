@@ -87,21 +87,21 @@ jobs:
     needs: create-matrix
     if: ${{ github.event_name == 'pull_request' }}
     name: Create API preview on Bump.sh
-    # strategy:
-    #   matrix: 
-    #     spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix).spec-mapping }}
+    strategy:
+      matrix: 
+        spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: echo "${{ toJSON(needs.create-matrix.outputs) }}"
-      # - name: Create API preview
-      #   uses: bump-sh/github-action@v1
-      #   with:
-      #     doc: ${{matrix.spec-mapping.doc}}
-      #     token: ${{secrets.BUMP_TOKEN}}
-      #     file: ${{matrix.spec-mapping.file}}
-      #     branch: ${{matrix.spec-mapping.branch}}
-      #     command: preview
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      # - run: echo "${{ toJSON(needs.create-matrix.outputs) }}"
+      - name: Create API preview
+        uses: bump-sh/github-action@v1
+        with:
+          doc: ${{matrix.spec-mapping.doc}}
+          token: ${{secrets.BUMP_TOKEN}}
+          file: ${{matrix.spec-mapping.file}}
+          branch: ${{matrix.spec-mapping.branch}}
+          command: preview
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
