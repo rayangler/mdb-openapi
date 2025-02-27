@@ -20,10 +20,9 @@ jobs:
       matrix: ${{ toJson(matrix) }}
     steps:
       - run: echo "Creating shared matrix"
-
     strategy:
       matrix:
-        spec_mapping: [
+        spec-mapping: [
           {
             doc: "atlas-admin-api-v1",
             file: "openapi/v1-deprecated/v1.json",
