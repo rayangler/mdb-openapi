@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ toJson(matrix) }}
+    steps:
+      - echo "Creating shared matrix"
+
     strategy:
       matrix:
         spec_mapping: [
@@ -44,7 +47,7 @@ jobs:
     name: Deploy API documentation on Bump.sh
     strategy:
       matrix: 
-        spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix) }}
+        spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix).spec-mapping }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -63,7 +66,7 @@ jobs:
     name: Create API preview on Bump.sh
     strategy:
       matrix: 
-        spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix) }}
+        spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix).spec-mapping }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
