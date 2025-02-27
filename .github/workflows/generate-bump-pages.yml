@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Generate matrix
         id: set-matrix
+        # Ideally, the mapping is generated more dynamically, especially when taking into account
+        # Atlas Admin API's v2 resource versions
         run: |
           echo "Creating shared matrix"
           spec_mapping='[
@@ -41,28 +43,7 @@ jobs:
             }
           ]'
           single_line_json=$(echo $spec_mapping | tr -d '\n')
-          echo $spec_mapping
-          echo $single_line_json
           echo "matrix=$single_line_json" >> $GITHUB_OUTPUT
-    # strategy:
-    #   matrix:
-    #     spec-mapping: [
-    #       {
-    #         doc: "atlas-admin-api-v1",
-    #         file: "openapi/v1-deprecated/v1.json",
-    #         branch: "main",
-    #       },
-    #       { 
-    #         doc: "atlas-admin-api-v2", 
-    #         file: "openapi/v2.json",
-    #         branch: "latest",
-    #       },
-    #       { 
-    #         doc: "atlas-admin-api-v2", 
-    #         file: "openapi/v2/openapi-2025-02-19.json",
-    #         branch: "2025-02-19",
-    #       },
-    #     ]
 
   deploy-doc:
     needs: create-matrix
@@ -94,7 +75,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # - run: echo "${{ toJSON(needs.create-matrix.outputs) }}"
       - name: Create API preview
         uses: bump-sh/github-action@v1
         with:
