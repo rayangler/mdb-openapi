@@ -17,28 +17,49 @@ jobs:
   create-matrix:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ toJson(matrix) }}
+      matrix: ${{ toJson(steps.set-matrix.outputs.mapping) }}
     steps:
-      - run: echo "Creating shared matrix"
-    strategy:
-      matrix:
-        spec-mapping: [
-          {
-            doc: "atlas-admin-api-v1",
-            file: "openapi/v1-deprecated/v1.json",
-            branch: "main",
-          },
-          { 
-            doc: "atlas-admin-api-v2", 
-            file: "openapi/v2.json",
-            branch: "latest",
-          },
-          { 
-            doc: "atlas-admin-api-v2", 
-            file: "openapi/v2/openapi-2025-02-19.json",
-            branch: "2025-02-19",
-          },
-        ]
+      - name: Generate matrix
+        id: set-matrix
+        run: |
+          echo "Creating shared matrix"
+          spec_mapping='[
+            {
+              "doc": "atlas-admin-api-v1",
+              "file": "openapi/v1-deprecated/v1.json",
+              "branch": "main",
+            },
+            { 
+              "doc": "atlas-admin-api-v2", 
+              "file": "openapi/v2.json",
+              "branch": "latest",
+            },
+            { 
+              "doc": "atlas-admin-api-v2", 
+              "file": "openapi/v2/openapi-2025-02-19.json",
+              "branch": "2025-02-19",
+            },
+          ]'
+          echo "mapping=$spec_mapping" >> $GITHUB_OUTPUT
+    # strategy:
+    #   matrix:
+    #     spec-mapping: [
+    #       {
+    #         doc: "atlas-admin-api-v1",
+    #         file: "openapi/v1-deprecated/v1.json",
+    #         branch: "main",
+    #       },
+    #       { 
+    #         doc: "atlas-admin-api-v2", 
+    #         file: "openapi/v2.json",
+    #         branch: "latest",
+    #       },
+    #       { 
+    #         doc: "atlas-admin-api-v2", 
+    #         file: "openapi/v2/openapi-2025-02-19.json",
+    #         branch: "2025-02-19",
+    #       },
+    #     ]
 
   deploy-doc:
     needs: create-matrix
@@ -63,20 +84,21 @@ jobs:
     needs: create-matrix
     if: ${{ github.event_name == 'pull_request' }}
     name: Create API preview on Bump.sh
-    strategy:
-      matrix: 
-        spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix).spec-mapping }}
+    # strategy:
+    #   matrix: 
+    #     spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix).spec-mapping }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Create API preview
-        uses: bump-sh/github-action@v1
-        with:
-          doc: ${{matrix.spec-mapping.doc}}
-          token: ${{secrets.BUMP_TOKEN}}
-          file: ${{matrix.spec-mapping.file}}
-          branch: ${{matrix.spec-mapping.branch}}
-          command: preview
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - run: echo "${{ toJSON(needs.create-matrix.outputs) }}"
+      # - name: Create API preview
+      #   uses: bump-sh/github-action@v1
+      #   with:
+      #     doc: ${{matrix.spec-mapping.doc}}
+      #     token: ${{secrets.BUMP_TOKEN}}
+      #     file: ${{matrix.spec-mapping.file}}
+      #     branch: ${{matrix.spec-mapping.branch}}
+      #     command: preview
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
