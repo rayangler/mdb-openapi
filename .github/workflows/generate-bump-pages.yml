@@ -38,7 +38,7 @@ jobs:
               "doc": "atlas-admin-api-v2", 
               "file": "openapi/v2/openapi-2025-02-19.json",
               "branch": "2025-02-19",
-            },
+            }
           ]'
           echo $spec_mapping
           echo "mapping=$spec_mapping" >> $GITHUB_OUTPUT
