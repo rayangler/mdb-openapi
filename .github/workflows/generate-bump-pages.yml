@@ -17,7 +17,7 @@ jobs:
   create-matrix:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ toJson(steps.set-matrix.outputs.mapping) }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Generate matrix
         id: set-matrix
@@ -43,7 +43,7 @@ jobs:
           single_line_json=$(echo $spec_mapping | tr -d '\n')
           echo $spec_mapping
           echo $single_line_json
-          echo "mapping=$single_line_json" >> $GITHUB_OUTPUT
+          echo "matrix=$single_line_json" >> $GITHUB_OUTPUT
     # strategy:
     #   matrix:
     #     spec-mapping: [
