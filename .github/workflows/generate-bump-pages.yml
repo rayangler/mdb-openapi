@@ -40,6 +40,7 @@ jobs:
               "branch": "2025-02-19",
             },
           ]'
+          echo $spec_mapping
           echo "mapping=$spec_mapping" >> $GITHUB_OUTPUT
     # strategy:
     #   matrix:
