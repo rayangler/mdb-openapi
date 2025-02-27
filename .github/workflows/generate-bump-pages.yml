@@ -19,7 +19,7 @@ jobs:
     outputs:
       matrix: ${{ toJson(matrix) }}
     steps:
-      - echo "Creating shared matrix"
+      - run: echo "Creating shared matrix"
 
     strategy:
       matrix:
