@@ -40,8 +40,10 @@ jobs:
               "branch": "2025-02-19",
             }
           ]'
+          single_line_json=$(echo $spec_mapping | tr -d '\n')
           echo $spec_mapping
-          echo "mapping=$spec_mapping" >> $GITHUB_OUTPUT
+          echo $single_line_json
+          echo "mapping=$single_line_json" >> $GITHUB_OUTPUT
     # strategy:
     #   matrix:
     #     spec-mapping: [
