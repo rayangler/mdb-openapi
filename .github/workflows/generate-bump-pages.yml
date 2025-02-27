@@ -73,10 +73,10 @@ jobs:
       - name: Create API preview
         uses: bump-sh/github-action@v1
         with:
-          doc: ${{matrix.spec_mapping.doc}}
+          doc: ${{matrix.spec-mapping.doc}}
           token: ${{secrets.BUMP_TOKEN}}
-          file: ${{matrix.spec_mapping.file}}
-          branch: ${{matrix.spec_mapping.branch}}
+          file: ${{matrix.spec-mapping.file}}
+          branch: ${{matrix.spec-mapping.branch}}
           command: preview
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
