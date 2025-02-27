@@ -19,17 +19,17 @@ jobs:
       matrix:
         spec_mapping: [
           {
-            doc: "test-atlas-admin-api-v1",
+            doc: "atlas-admin-api-v1",
             file: "openapi/v1-deprecated/v1.json",
             branch: "main",
           },
           { 
-            doc: "test-atlas-admin-api-v2", 
+            doc: "atlas-admin-api-v2", 
             file: "openapi/v2.json",
             branch: "latest",
           },
           { 
-            doc: "test-atlas-admin-api-v2", 
+            doc: "atlas-admin-api-v2", 
             file: "openapi/v2/openapi-2025-02-19.json",
             branch: "2025-02-19",
           },
