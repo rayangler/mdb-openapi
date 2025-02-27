@@ -89,7 +89,7 @@ jobs:
     name: Create API preview on Bump.sh
     strategy:
       matrix: 
-        spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix) }}
+        spec-mapping: ${{ fromJson(needs.create-matrix.outputs).matrix }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
