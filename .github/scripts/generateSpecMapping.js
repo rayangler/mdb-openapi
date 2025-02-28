@@ -1,5 +1,5 @@
-import fs from 'node:fs';
-import path from 'node:path';
+const fs = require('node:fs');
+const path = require('node:path');
 
 const ATLAS_ADMIN_API_V2_DOC = 'atlas-admin-api-v2';
 
