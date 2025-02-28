@@ -70,5 +70,3 @@ jobs:
           file: ${{matrix.spec-mapping.file}}
           branch: ${{matrix.spec-mapping.branch}}
           command: preview
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
