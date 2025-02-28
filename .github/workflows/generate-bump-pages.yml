@@ -19,6 +19,8 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
       - name: Generate matrix
         id: set-matrix
         # Ideally, the mapping is generated more dynamically, especially when taking into account
