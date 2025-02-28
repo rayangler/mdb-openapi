@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const ATLAS_ADMIN_API_V2_DOC = 'atlas-admin-api-v2';
 
 const SPEC_MAPPING = [
