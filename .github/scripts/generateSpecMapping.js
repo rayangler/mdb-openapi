@@ -1,5 +1,5 @@
-// const fs = require('node:fs');
-// const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
 
 const ATLAS_ADMIN_API_V2_DOC = 'atlas-admin-api-v2';
 
@@ -20,27 +20,27 @@ const SPEC_MAPPING = [
 /**
  * Handles the resource versions for Atlas Admin API v2
  */
-// function handleResourceVersions() {
-//   const directory = 'openapi/v2';
-//   const versionsFilePath = `${directory}/versions.json`;
-//   const filePath = path.join(__dirname, `../../${versionsFilePath}`);
-//   const versions = fs.readFileSync(versions, 'utf8');
+function handleResourceVersions() {
+  const directory = 'openapi/v2';
+  const versionsFilePath = `${directory}/versions.json`;
+  const filePath = path.join(__dirname, `../../${versionsFilePath}`);
+  const versions = fs.readFileSync(versions, 'utf8');
   
-//   for (const version of versions) {
-//     const openapiFilename = `openapi-${version}.json`;
-//     const openapiFilePath = path.join(path.dirname(filePath), openapiFilename);
+  for (const version of versions) {
+    const openapiFilename = `openapi-${version}.json`;
+    const openapiFilePath = path.join(path.dirname(filePath), openapiFilename);
 
-//     if (!fs.existsSync(openapiFilePath)) {
-//       continue;
-//     }
+    if (!fs.existsSync(openapiFilePath)) {
+      continue;
+    }
 
-//     SPEC_MAPPING.push({
-//       doc: ATLAS_ADMIN_API_V2_DOC,
-//       file: `${directory}/${openapiFilename}`,
-//       branch: version,
-//     });
-//   }
-// }
+    SPEC_MAPPING.push({
+      doc: ATLAS_ADMIN_API_V2_DOC,
+      file: `${directory}/${openapiFilename}`,
+      branch: version,
+    });
+  }
+}
 
-// handleResourceVersions();
+handleResourceVersions();
 console.log(JSON.stringify(SPEC_MAPPING));
