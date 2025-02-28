@@ -4,38 +4,41 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'openapi/**.json'
 
   pull_request:
     branches:
       - main
+    paths:
+      - 'openapi/**.json'
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
+  create-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+      - name: Generate matrix
+        id: set-matrix
+        run: |
+          spec_mapping=$(node .github/scripts/generateSpecMapping.js)
+          echo "matrix=$spec_mapping" >> "$GITHUB_OUTPUT"
+
   deploy-doc:
-    strategy:
-      matrix:
-        spec_mapping: [
-          {
-            doc: "atlas-admin-api-v1",
-            file: "openapi/v1-deprecated/v1.json",
-            branch: "main",
-          },
-          { 
-            doc: "atlas-admin-api-v2", 
-            file: "openapi/v2.json",
-            branch: "latest",
-          },
-          { 
-            doc: "atlas-admin-api-v2", 
-            file: "openapi/v2/openapi-2025-02-19.json",
-            branch: "2025-02-19",
-          },
-        ]
+    needs: create-matrix
     if: ${{ github.event_name == 'push' }}
     name: Deploy API documentation on Bump.sh
+    strategy:
+      matrix: 
+        spec-mapping: ${{ fromJson(needs.create-matrix.outputs.matrix) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,44 +46,27 @@ jobs:
       - name: Deploy API documentation
         uses: bump-sh/github-action@v1
         with:
-          doc: ${{matrix.spec_mapping.doc}}
+          doc: ${{matrix.spec-mapping.doc}}
           token: ${{secrets.BUMP_TOKEN}}
-          file: ${{matrix.spec_mapping.file}}
-          branch: ${{matrix.spec_mapping.branch}}
+          file: ${{matrix.spec-mapping.file}}
+          branch: ${{matrix.spec-mapping.branch}}
   
-  api-diff:
-    strategy:
-      matrix:
-        spec_mapping: [
-          {
-            doc: "test-atlas-admin-api-v1",
-            file: "openapi/v1-deprecated/v1.json",
-            branch: "main",
-          },
-          { 
-            doc: "test-atlas-admin-api-v2", 
-            file: "openapi/v2.json",
-            branch: "latest",
-          },
-          { 
-            doc: "test-atlas-admin-api-v2",
-            file: "openapi/v2/openapi-2025-02-19.json",
-            branch: "2025-02-19",
-          },
-        ]
+  api-preview:
+    needs: create-matrix
     if: ${{ github.event_name == 'pull_request' }}
-    name: Check API diff on Bump.sh
+    name: Create API preview on Bump.sh
+    strategy:
+      matrix: 
+        spec-mapping: ${{ fromJSON(needs.create-matrix.outputs.matrix) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Comment pull request with API diff
+      - name: Create API preview
         uses: bump-sh/github-action@v1
         with:
-          doc: ${{matrix.spec_mapping.doc}}
+          doc: ${{matrix.spec-mapping.doc}}
           token: ${{secrets.BUMP_TOKEN}}
-          file: ${{matrix.spec_mapping.file}}
-          branch: ${{matrix.spec_mapping.branch}}
+          file: ${{matrix.spec-mapping.file}}
+          branch: ${{matrix.spec-mapping.branch}}
           command: preview
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
