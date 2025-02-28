@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Setup Node
         uses: actions/setup-node@v4
+      - name: List files in the repository
+        run: ls -R .github/scripts
       - name: Generate matrix
         id: set-matrix
         # Ideally, the mapping is generated more dynamically, especially when taking into account
