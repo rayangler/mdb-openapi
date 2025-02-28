@@ -5,13 +5,13 @@ on:
     branches:
       - main
     paths:
-      - 'openapi/**'
+      - 'openapi/**.json'
 
   pull_request:
     branches:
       - main
     paths:
-      - 'openapi/**'
+      - 'openapi/**.json'
 
 permissions:
   contents: read
