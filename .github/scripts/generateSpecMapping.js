@@ -25,9 +25,8 @@ const SPEC_MAPPING = [
  */
 function handleResourceVersions() {
   const directory = 'openapi/v2';
-  const versionsFilePath = `${directory}/versions.json`;
-  const filePath = path.join(__dirname, `../../${versionsFilePath}`);
-  const versions = fs.readFileSync(versions, 'utf8');
+  const filePath = path.join(__dirname, `../../${directory}/versions.json`);
+  const versions = fs.readFileSync(filePath, 'utf8');
   
   for (const version of versions) {
     const openapiFilename = `openapi-${version}.json`;
