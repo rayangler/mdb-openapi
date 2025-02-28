@@ -30,7 +30,7 @@ jobs:
         id: set-matrix
         run: |
           spec_mapping=$(node .github/scripts/generateSpecMapping.js)
-          echo "matrix=$single_line_json" >> "$GITHUB_OUTPUT"
+          echo "matrix=$spec_mapping" >> "$GITHUB_OUTPUT"
 
   deploy-doc:
     needs: create-matrix
