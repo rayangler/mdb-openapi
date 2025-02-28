@@ -13,8 +13,8 @@ const SPEC_MAPPING = [
     branch: 'main',
   },
   // Need to programmatically handle resource versions separately
-  { 
-    doc: ATLAS_ADMIN_API_V2_DOC, 
+  {
+    doc: ATLAS_ADMIN_API_V2_DOC,
     file: 'openapi/v2.json',
     branch: 'latest',
   },
@@ -27,7 +27,7 @@ function handleResourceVersions() {
   const directory = 'openapi/v2';
   const filePath = path.join(__dirname, `../../${directory}/versions.json`);
   const versions = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  
+
   for (const version of versions) {
     const openapiFilename = `openapi-${version}.json`;
     const openapiFilePath = path.join(path.dirname(filePath), openapiFilename);
