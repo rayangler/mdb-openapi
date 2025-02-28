@@ -6,7 +6,6 @@ import pluginJs from '@eslint/js';
 import pluginJest from 'eslint-plugin-jest';
 import jest from 'eslint-plugin-jest';
 
-// Test comment
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
