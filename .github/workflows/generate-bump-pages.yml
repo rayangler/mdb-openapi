@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "Creating shared matrix"
           spec_mapping=$(node .github/scripts/generateSpecMapping.js)
-          single_line_json=$(echo $spec_mapping | tr -d '\n')
+          single_line_json=$(echo $spec_mapping | tr -d "\n")
           echo "matrix=$single_line_json" >> $GITHUB_OUTPUT
 
   deploy-doc:
