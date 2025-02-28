@@ -19,6 +19,8 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Setup Node
         uses: actions/setup-node@v4
       - name: List files in the repository
