@@ -25,23 +25,7 @@ jobs:
         # Atlas Admin API's v2 resource versions
         run: |
           echo "Creating shared matrix"
-          spec_mapping='[
-            {
-              "doc": "atlas-admin-api-v1",
-              "file": "openapi/v1-deprecated/v1.json",
-              "branch": "main",
-            },
-            { 
-              "doc": "atlas-admin-api-v2", 
-              "file": "openapi/v2.json",
-              "branch": "latest",
-            },
-            { 
-              "doc": "atlas-admin-api-v2", 
-              "file": "openapi/v2/openapi-2025-02-19.json",
-              "branch": "2025-02-19",
-            }
-          ]'
+          spec_mapping=$(node .github/scripts/generateSpecMapping.js)
           single_line_json=$(echo $spec_mapping | tr -d '\n')
           echo "matrix=$single_line_json" >> $GITHUB_OUTPUT
 
