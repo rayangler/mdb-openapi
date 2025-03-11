@@ -8,14 +8,14 @@ const __dirname = path.dirname(__filename);
 // Add new specs to be deployed to Bump here
 const SPEC_MAPPING = [
   {
-    doc: 'f929d2d7-27d7-4591-b22f-6c2e543a7874',
+    doc: 'e58f5bdf-b5e2-43b8-93e3-0cd8372ec96a',
     file: 'openapi/v1-deprecated/v1.json',
     branch: 'main',
   },
 ];
 
 function handleAdminAPIv2() {
-  const docId = '2accf4b8-a543-426c-94c3-794ae26b68be';
+  const docId = 'd56a90c4-0880-4495-83d8-04fad2429ad7';
   const directory = 'openapi/v2';
   const filePath = path.join(__dirname, `../../${directory}/versions.json`);
   const versions = JSON.parse(fs.readFileSync(filePath, 'utf8'));
